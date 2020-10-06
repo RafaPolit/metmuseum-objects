@@ -10,5 +10,8 @@
     "csvtojson": "^2.0.10",
     "mongodb": "^3.6.2"
   },
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "insert-objects": "node scripts/insert_raw_files.js"
+  }
 }
