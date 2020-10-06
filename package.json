@@ -1,0 +1,14 @@
+{
+  "name": "metmuseum-objects",
+  "version": "0.1.0",
+  "description": "Met Museum objects",
+  "main": "index.js",
+  "repository": "git@github.com:RafaPolit/metmuseum-objects.git",
+  "author": "RafaPolit <rafaelpolit@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "csvtojson": "^2.0.10",
+    "mongodb": "^3.6.2"
+  },
+  "type": "module"
+}
