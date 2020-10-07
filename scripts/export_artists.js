@@ -17,6 +17,31 @@ const keysToPopulate = [
   "Artist Wikidata URL",
 ];
 
+const escapeQuotes = (string) => {
+  return string.replace(/\"/g, '""');
+};
+
+let extractYear = (string) => {
+  if (string !== "") {
+    let date = string;
+    const firstCharacter = string.indexOf("-") === 0 ? "-" : "";
+    if (firstCharacter === "-") {
+      date = date.substr(1, date.length - 1);
+    }
+
+    for (let pos = 0; pos < 5; pos++) {
+      if (date.indexOf("0") === 0) {
+        date = date.substr(1, date.length - 1);
+      }
+    }
+
+    const year = Number(date.split("-")[0]);
+    return Number(`${firstCharacter}${year}`);
+  }
+
+  return "";
+};
+
 const export_artists = async () => {
   console.log("Exporting artists...");
   try {
@@ -24,6 +49,7 @@ const export_artists = async () => {
     const database = client.db("metmuseum-raw");
     const artists = database.collection("aritsts");
 
+    // const cursor = artists.find({}, { limit: 30 });
     const cursor = artists.find({});
 
     let artist;
@@ -34,7 +60,7 @@ const export_artists = async () => {
     });
 
     artistsCsv.write(
-      "title;Display Bio;Alpha Sort;Nationality;Begin Date;End Date;Gender;ULAN URL;Wikidata URL\r\n"
+      "title;Artist Display Bio;Artist Alpha Sort;Artist Nationality;Artist Begin Date;Artist End Date;Artist Gender;Artist ULAN URL;Artist Wikidata URL\r\n"
     );
 
     while ((artist = await cursor.next())) {
@@ -42,15 +68,19 @@ const export_artists = async () => {
       const row = [];
       keysToPopulate.forEach((key) => {
         if (key === "Artist Begin Date" || key === "Artist End Date") {
-          row.push(`${artist[key]}`);
+          row.push(extractYear(artist[key]));
         } else if (key === "Artist ULAN URL" || key === "Artist Wikidata URL") {
-          row.push(
-            artist[key]
-              ? `"${artist[key].substr(0, 33)}...|${artist[key]}"`
-              : '""'
-          );
+          if (artist[key].indexOf("http") === 0) {
+            row.push(
+              artist[key]
+                ? `"${artist[key].substr(0, 33)}...|${artist[key]}"`
+                : '""'
+            );
+          } else {
+            row.push('""');
+          }
         } else {
-          row.push(`"${artist[key]}"`);
+          row.push(`"${escapeQuotes(artist[key])}"`);
         }
       });
       artistsCsv.write(`${row.join(";")}\r\n`);
