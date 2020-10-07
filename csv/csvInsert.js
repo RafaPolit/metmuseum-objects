@@ -28,7 +28,7 @@ export class CSVLoader extends EventEmitter {
     }
   }
 
-  async load(csvPath) {
+  async insertRowsFrom(csvPath) {
     const csvProcess = csv(csvPath, this.stopOnError);
 
     const mongoUri = "mongodb://localhost/";
