@@ -1,6 +1,5 @@
 import fs from "fs";
 import mongodb from "mongodb";
-import { stdout } from "process";
 
 const mongoUri = "mongodb://localhost/";
 const client = new mongodb.MongoClient(mongoUri, { useUnifiedTopology: true });
