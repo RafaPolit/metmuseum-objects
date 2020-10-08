@@ -41,6 +41,7 @@ export class CSVLoader extends EventEmitter {
 
       await csvProcess
         .onRow(async (row, index) => {
+          row["Object ID"] = mongodb.Long.fromString(row["Object ID"]);
           const result = await collection.insertOne(row);
           console.log("Inserted row:", index);
           this.emit("rowLoaded", row);
