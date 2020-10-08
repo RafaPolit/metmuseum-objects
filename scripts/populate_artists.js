@@ -30,7 +30,7 @@ const populate_artists = async () => {
     await client.connect();
     const database = client.db("metmuseum-raw");
     const objects = database.collection("objects");
-    const artists = database.collection("aritsts");
+    const artists = database.collection("artists");
 
     const cursor = objects.find({});
 

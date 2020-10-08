@@ -47,7 +47,7 @@ const export_artists = async () => {
   try {
     await client.connect();
     const database = client.db("metmuseum-raw");
-    const artists = database.collection("aritsts");
+    const artists = database.collection("artists");
 
     // const cursor = artists.find({}, { limit: 30 });
     const cursor = artists.find({});
