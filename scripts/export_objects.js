@@ -1,51 +1,12 @@
 import fs from "fs";
 import mongodb from "mongodb";
+import objectsStructure from "../config/objects-structure.js";
 
 const mongoUri = "mongodb://localhost/";
 const client = new mongodb.MongoClient(mongoUri, { useUnifiedTopology: true });
 const passedArgs = process.argv.slice(2);
 
-const keysToPopulate = [
-  { key: "Object Number", type: "string" },
-  { key: "Is Highlight", type: "string" },
-  { key: "Is Timeline Work", type: "string" },
-  { key: "Is Public Domain", type: "string" },
-  { key: "Object ID", type: "integer" },
-  { key: "Gallery Number", type: "string" },
-  { key: "Department", type: "string" },
-  { key: "AccessionYear", type: "year", rename: "Accession Year" },
-  { key: "Object Name", type: "string" },
-  { key: "Title", type: "string" },
-  { key: "Culture", type: "string" },
-  { key: "Period", type: "string" },
-  { key: "Dynasty", type: "string" },
-  { key: "Reign", type: "string" },
-  { key: "Portfolio", type: "string" },
-  { key: "Constituent ID", type: "integer" },
-  { key: "Object Date", type: "string" },
-  { key: "Object Begin Date", type: "year" },
-  { key: "Object End Date", type: "year" },
-  { key: "Medium", type: "string" },
-  { key: "Dimensions", type: "string" },
-  { key: "Credit Line", type: "string" },
-  { key: "Geography Type", type: "string" },
-  { key: "City", type: "string" },
-  { key: "State", type: "string" },
-  { key: "County", type: "string" },
-  { key: "Region", type: "string" },
-  { key: "Subregion", type: "string" },
-  { key: "Locale", type: "string" },
-  { key: "Locus", type: "string" },
-  { key: "Excavation", type: "string" },
-  { key: "River", type: "string" },
-  { key: "Classification", type: "string" },
-  { key: "Rights and Reproduction", type: "string" },
-  { key: "Link Resource", type: "link" },
-  { key: "Object Wikidata URL", type: "link" },
-  { key: "Metadata Date", type: "string" },
-  { key: "Repository", type: "string" },
-  { key: "Tags", type: "string" },
-];
+const keysToPopulate = objectsStructure;
 
 const escapeQuotes = (string) => {
   return string.replace(/\"/g, '""');
