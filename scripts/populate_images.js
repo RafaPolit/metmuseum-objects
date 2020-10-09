@@ -15,12 +15,14 @@ const populateImages = async () => {
     const startID = passedArgs[0] || 0;
     const endID = passedArgs[1] || 1000000;
 
-    const cursor = objects.find({
-      $and: [
-        { "Object ID": { $gte: Number(startID) } },
-        { "Object ID": { $lte: Number(endID) } },
-      ],
-    });
+    const cursor = objects
+      .find({
+        $and: [
+          { "Object ID": { $gte: Number(startID) } },
+          { "Object ID": { $lte: Number(endID) } },
+        ],
+      })
+      .noCursorTimeout();
 
     let object;
     let added = 0;
@@ -52,6 +54,7 @@ const populateImages = async () => {
     process.stdout.write("\r\n");
 
     console.log("Populated", added, "images.");
+    cursor.close();
     await client.close();
   } catch (err) {
     await client.close();
