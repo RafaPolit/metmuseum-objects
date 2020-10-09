@@ -22,7 +22,8 @@ const populateImages = async () => {
           { "Object ID": { $lte: Number(endID) } },
         ],
       })
-      .noCursorTimeout();
+      .sort({ "Object ID": 1 })
+      .addCursorFlag("noCursorTimeout", true);
 
     let object;
     let added = 0;
