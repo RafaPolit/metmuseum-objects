@@ -6,7 +6,7 @@ const client = new mongodb.MongoClient(mongoUri, { useUnifiedTopology: true });
 const passedArgs = process.argv.slice(2);
 
 const populateImages = async () => {
-  console.log("Populating Primary Image...");
+  console.log("Populating Images...");
   try {
     await client.connect();
     const database = client.db("metmuseum-raw");
