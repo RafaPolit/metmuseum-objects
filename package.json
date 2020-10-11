@@ -7,6 +7,7 @@
   "author": "RafaPolit <rafaelpolit@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@supercharge/promise-pool": "^1.5.0",
     "csvtojson": "^2.0.10",
     "mongodb": "^3.6.2",
     "superagent": "^6.1.0"

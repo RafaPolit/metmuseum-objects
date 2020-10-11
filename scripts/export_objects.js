@@ -12,6 +12,10 @@ const escapeQuotes = (string) => {
   return string.replace(/\"/g, '""');
 };
 
+const spacePipe = (string) => {
+  return string.replace(/\|/g, " | ");
+};
+
 const extractYear = (string) => {
   if (string !== "") {
     let date = string;
@@ -41,8 +45,35 @@ const conformLink = (string) => {
   return link;
 };
 
+const conformImagesArray = (imagesArray) => {
+  if (!imagesArray || !imagesArray.length) {
+    return '""';
+  }
+
+  let richTextArray = [];
+  const limit = 50;
+
+  imagesArray.forEach((o, i) => {
+    if (i < limit) {
+      richTextArray.push(`![${i}](${encodeURI(o)}#thumbnail)`);
+    }
+  });
+
+  return `"${richTextArray.join("\r\n")}${
+    imagesArray.length > limit
+      ? `\r\n(${imagesArray.length - limit} more images)`
+      : ""
+  }"`;
+};
+
 const processField = {
   string: (string) => `"${escapeQuotes(string)}"`,
+  title: (string, object) =>
+    `"${escapeQuotes(
+      spacePipe(string || object["Object Name"] || "(no title)")
+    )}"`,
+  image: (string) => (string ? `"${string}"` : '""'),
+  imagesArray: conformImagesArray,
   integer: (value) =>
     value ? mongodb.Long.fromString(value.toString()) : '""',
   year: (string) => extractYear(string),
@@ -89,7 +120,7 @@ const export_objects = async () => {
 
       const row = [];
       keysToPopulate.forEach((keyData) => {
-        row.push(processField[keyData.type](object[keyData.key]));
+        row.push(processField[keyData.type](object[keyData.key], object));
       });
       objectsCsv.write(`${row.join(";")}\r\n`);
       exported += 1;
